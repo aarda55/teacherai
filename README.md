@@ -1,5 +1,5 @@
 # teacherai
-Artificial tutor for humans
+Artificial tutor for humans (in work - Support welcomed)
 ----------------------------------------------------------------------
 created for the bwki competition in germany:
 
