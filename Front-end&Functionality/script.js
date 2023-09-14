@@ -1,10 +1,42 @@
 const chatContainer = document.getElementById('chat');
 const userInput = document.getElementById('user-input');
+const startRecordButton = document.getElementById('start-record');
 
 if ('speechSynthesis' in window) {
     var synth = window.speechSynthesis;
 } else {
     console.error('SpeechSynthesis is not supported in this browser.');
+}
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+} else {
+    console.error('Speech recognition is not supported in this browser.');
+}
+
+
+recognition.continuous = false;
+recognition.lang = 'en-US'; 
+
+
+recognition.onresult = function (event) {
+    const userMessage = event.results[0][0].transcript;
+    appendMessage('user', userMessage);
+    processUserInput(userMessage);
+};
+
+
+recognition.onerror = function (event) {
+    console.error('Speech recognition error:', event.error);
+};
+
+startRecordButton.addEventListener('click', function () {
+    startRecognition();
+});
+
+function startRecognition() {
+    recognition.start();
+    startRecordButton.textContent = 'Listening...';
+    startRecordButton.disabled = true;
 }
 
 function appendMessage(sender, message) {
